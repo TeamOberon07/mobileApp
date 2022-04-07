@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-da/values-da.xml",
+            "outputFile": "/home/matteo/Desktop/GitHub/mobile_app_poc/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-da/values-da.xml",
             "map": [
                 {
                     "source": "/home/matteo/.gradle/caches/transforms-3/ebfec1fd6c1d3146c4318849081699f6/transformed/core-1.6.0/res/values-da/values-da.xml",

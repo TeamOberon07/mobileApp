@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-ja/values-ja.xml",
+            "outputFile": "/home/matteo/Desktop/GitHub/mobile_app_poc/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-ja/values-ja.xml",
             "map": [
                 {
                     "source": "/home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/res/values-ja/values-ja.xml",

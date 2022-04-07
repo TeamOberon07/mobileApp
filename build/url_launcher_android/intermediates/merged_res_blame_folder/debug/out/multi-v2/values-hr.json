@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/build/url_launcher_android/intermediates/incremental/mergeDebugResources/merged.dir/values-hr/values-hr.xml",
+            "outputFile": "/home/matteo/Desktop/GitHub/mobile_app_poc/build/url_launcher_android/intermediates/res/merged/debug/values-hr/values-hr.xml",
             "map": [
                 {
                     "source": "/home/matteo/.gradle/caches/transforms-3/ebfec1fd6c1d3146c4318849081699f6/transformed/core-1.6.0/res/values-hr/values-hr.xml",
@@ -16,7 +16,7 @@
             ]
         },
         {
-            "outputFile": "/home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/build/url_launcher_android/intermediates/res/merged/debug/values-hr/values-hr.xml",
+            "outputFile": "/home/matteo/Desktop/GitHub/mobile_app_poc/build/url_launcher_android/intermediates/incremental/mergeDebugResources/merged.dir/values-hr/values-hr.xml",
             "map": [
                 {
                     "source": "/home/matteo/.gradle/caches/transforms-3/ebfec1fd6c1d3146c4318849081699f6/transformed/core-1.6.0/res/values-hr/values-hr.xml",

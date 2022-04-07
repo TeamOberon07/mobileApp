@@ -12,8 +12,8 @@
 12         to allow setting breakpoints, to provide hot reload, etc.
 13    -->
 14    <uses-permission android:name="android.permission.INTERNET" />
-14-->/home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/android/app/src/debug/AndroidManifest.xml:6:5-66
-14-->/home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/android/app/src/debug/AndroidManifest.xml:6:22-64
+14-->/home/matteo/Desktop/GitHub/mobile_app_poc/android/app/src/debug/AndroidManifest.xml:6:5-66
+14-->/home/matteo/Desktop/GitHub/mobile_app_poc/android/app/src/debug/AndroidManifest.xml:6:22-64
 15    <uses-permission android:name="android.permission.CAMERA" /> <!-- Don't require camera, as this requires a rear camera. This allows it to work on the Nexus 7 -->
 15-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:22:5-65
 15-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:22:22-62
@@ -96,27 +96,41 @@
 73            android:value="2" />
 74
 75        <activity
-75-->[:url_launcher_android] /home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:8:9-11:74
+75-->[:url_launcher_android] /home/matteo/Desktop/GitHub/mobile_app_poc/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:8:9-11:74
 76            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-76-->[:url_launcher_android] /home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:13-74
+76-->[:url_launcher_android] /home/matteo/Desktop/GitHub/mobile_app_poc/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:9:13-74
 77            android:exported="false"
-77-->[:url_launcher_android] /home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:13-37
+77-->[:url_launcher_android] /home/matteo/Desktop/GitHub/mobile_app_poc/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:10:13-37
 78            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-78-->[:url_launcher_android] /home/matteo/Desktop/GitHub/mobileAppOberon/mobile_app_poc/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-71
-79        <activity
-79-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:47:9-53:63
-80            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-80-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:48:13-74
-81            android:clearTaskOnLaunch="true"
-81-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:49:13-45
-82            android:screenOrientation="sensorLandscape"
-82-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:50:13-56
-83            android:stateNotNeeded="true"
-83-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:51:13-42
-84            android:theme="@style/zxing_CaptureTheme"
-84-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:52:13-54
-85            android:windowSoftInputMode="stateAlwaysHidden" />
-85-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:53:13-60
-86    </application>
-87
-88</manifest>
+78-->[:url_launcher_android] /home/matteo/Desktop/GitHub/mobile_app_poc/build/url_launcher_android/intermediates/merged_manifest/debug/AndroidManifest.xml:11:13-71
+79
+80        <uses-library
+80-->[androidx.window:window:1.0.0-beta04] /home/matteo/.gradle/caches/transforms-3/9d857666fd11cc9beeb193f403010f0e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
+81            android:name="androidx.window.extensions"
+81-->[androidx.window:window:1.0.0-beta04] /home/matteo/.gradle/caches/transforms-3/9d857666fd11cc9beeb193f403010f0e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
+82            android:required="false" />
+82-->[androidx.window:window:1.0.0-beta04] /home/matteo/.gradle/caches/transforms-3/9d857666fd11cc9beeb193f403010f0e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
+83        <uses-library
+83-->[androidx.window:window:1.0.0-beta04] /home/matteo/.gradle/caches/transforms-3/9d857666fd11cc9beeb193f403010f0e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
+84            android:name="androidx.window.sidecar"
+84-->[androidx.window:window:1.0.0-beta04] /home/matteo/.gradle/caches/transforms-3/9d857666fd11cc9beeb193f403010f0e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
+85            android:required="false" />
+85-->[androidx.window:window:1.0.0-beta04] /home/matteo/.gradle/caches/transforms-3/9d857666fd11cc9beeb193f403010f0e/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
+86
+87        <activity
+87-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:47:9-53:63
+88            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+88-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:48:13-74
+89            android:clearTaskOnLaunch="true"
+89-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:49:13-45
+90            android:screenOrientation="sensorLandscape"
+90-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:50:13-56
+91            android:stateNotNeeded="true"
+91-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:51:13-42
+92            android:theme="@style/zxing_CaptureTheme"
+92-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:52:13-54
+93            android:windowSoftInputMode="stateAlwaysHidden" />
+93-->[com.journeyapps:zxing-android-embedded:4.2.0] /home/matteo/.gradle/caches/transforms-3/7a6d8d067ec7e04dbd58162e714beca1/transformed/jetified-zxing-android-embedded-4.2.0/AndroidManifest.xml:53:13-60
+94    </application>
+95
+96</manifest>
