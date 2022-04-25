@@ -18,10 +18,10 @@ class _QROrderPageState extends State<QROrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    String QRresult = barCodeResult;
+    String QRresult = stateContext.getState().getBarcodeResult();
     String OrderBuyer = QRresult.split(":")[0];
 
-    if (OrderBuyer != account) {
+    if (OrderBuyer != stateContext.getState().getAccount()) {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -45,7 +45,7 @@ class _QROrderPageState extends State<QROrderPage> {
                   height: 100,
                   child: ElevatedButton(
                       onPressed: () => {
-                            barCodeResult = "",
+                            stateContext.getState().setBarcodeResult(""),
                             makeRoutePage(
                                 context, MyHomePage(title: "ShopChain Mobile"))
                           },
@@ -240,33 +240,33 @@ class _QROrderPageState extends State<QROrderPage> {
 
   Future<void> _confirmOrder(String orderID) async {
     final transaction = Transaction(
-      to: contractAddr,
-      from: EthereumAddress.fromHex(account),
+      to: stateContext.getState().getContractAddr(),
+      from: EthereumAddress.fromHex(stateContext.getState().getAccount()),
       value: EtherAmount.fromUnitAndValue(EtherUnit.finney, 0),
     );
 
     launch("https://metamask.app.link/");
 
-    String returned = await escrow.confirmOrder(BigInt.parse(orderID),
-        credentials: credentials, transaction: transaction);
+    String returned = await stateContext.getState().getEscrow().confirmOrder(BigInt.parse(orderID),
+        credentials: stateContext.getState().getCredentials(), transaction: transaction);
   }
 
   Future<void> _askRefund(String orderID) async {
     final transaction = Transaction(
-      to: contractAddr,
-      from: EthereumAddress.fromHex(account),
+      to: stateContext.getState().getContractAddr(),
+      from: EthereumAddress.fromHex(stateContext.getState().getAccount()),
       value: EtherAmount.fromUnitAndValue(EtherUnit.finney, 0),
     );
 
     launch("https://metamask.app.link/");
 
-    String returned = await escrow.askRefund(BigInt.parse(orderID),
-        credentials: credentials, transaction: transaction);
+    String returned = await stateContext.getState().getEscrow().askRefund(BigInt.parse(orderID),
+        credentials: stateContext.getState().getCredentials(), transaction: transaction);
   }
 
   Future<dynamic> _getOrder(int id) async {
     List<dynamic> orders =
-        await escrow.getOrdersOfUser(EthereumAddress.fromHex(account));
+        await stateContext.getState().getEscrow().getOrdersOfUser(EthereumAddress.fromHex(stateContext.getState().getAccount()));
     dynamic thisOrder;
     orders.forEach((element) => {
           if ((element[0]).toString() == id.toString()) {thisOrder = element}

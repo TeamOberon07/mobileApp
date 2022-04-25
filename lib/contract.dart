@@ -1,7 +1,5 @@
 import 'package:dart_web3/dart_web3.dart';
 import 'package:http/http.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:flutter/material.dart';
 
 import 'escrow.g.dart';
 

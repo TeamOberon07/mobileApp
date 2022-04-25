@@ -76,25 +76,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Create a new session
     if (!connector.connected) {
-      session = await connector.createSession(
+      stateContext.getState().setSession(await connector.createSession(
           chainId: 43113,
-          onDisplayUri: (uri) async => {print(uri), await launch(uri)});
+          onDisplayUri: (uri) async => {print(uri), await launch(uri)})); 
     }
 
     setState(() {
-      account = session.accounts[0];
+      stateContext.getState().setAccount(stateContext.getState().getSession().accounts[0]);
     });
-    if (account != null) {
-      final client = Web3Client(rpcUrl, Client());
+    if (stateContext.getState().getAccount() != null) {
+      final client = Web3Client(stateContext.getState().getRpcUrl(), Client());
       EthereumWalletConnectProvider provider =
           EthereumWalletConnectProvider(connector);
-      credentials = WalletConnectEthereumCredentials(provider: provider);
-      escrow = Escrow(address: contractAddr, client: client);
+      stateContext.getState().setCredentials(WalletConnectEthereumCredentials(provider: provider));
+      stateContext.getState().setEscrow(Escrow(address: stateContext.getState().getContractAddr(), client: client));
     }
   }
 
   Column _getButtons() {
-    if (account != null) {
+    if (stateContext.getState().getAccount() != null) {
       return Column(children: [
         SizedBox(
             height: 400,
@@ -189,10 +189,10 @@ class _MyHomePageState extends State<MyHomePage> {
     ]);
   }
 
-  Route _createRoute1() {
+  Route _createRoute1() {  stateContext.getState().setResult(null);
+    stateContext.getState().setBarcodeResult("");
     // reset QRCode scan results
-    result = null;
-    barCodeResult = "";
+  
 
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
@@ -215,8 +215,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Route _createRoute3() {
     // reset QRCode scan results
-    result = null;
-    barCodeResult = "";
+    stateContext.getState().setResult(null);
+    stateContext.getState().setBarcodeResult("");
 
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => OrdersPage(),

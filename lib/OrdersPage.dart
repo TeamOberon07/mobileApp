@@ -153,7 +153,7 @@ class OrdersPage extends StatelessWidget {
 
   Future<List<dynamic>> _getOrders() async {
     List<dynamic> orders =
-        await escrow.getOrdersOfUser(EthereumAddress.fromHex(account));
+        await stateContext.getState().getEscrow().getOrdersOfUser(EthereumAddress.fromHex(stateContext.getState().getAccount()));
     return orders;
   }
 }

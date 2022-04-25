@@ -41,7 +41,7 @@ class _QRScanPageState extends State<QRScanPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  if (result == null)
+                  if (stateContext.getState().getResult() == null)
                     const Padding(
                         child: Text('Scan a code...',
                             style: TextStyle(fontSize: 10)),
@@ -110,20 +110,20 @@ class _QRScanPageState extends State<QRScanPage> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    if (barCodeResult == "") {
+    if (stateContext.getState().getBarcodeResult() == "") {
       setState(() {
         this.controller = controller;
       });
       controller.scannedDataStream.listen((scanData) {
         var count = 0;
         setState(() {
-          result = scanData;
+          stateContext.getState().setResult(scanData);
           if (count == 0) {
             count++;
             Navigator.of(context).pop();
             Navigator.of(context).push(_createRoute2());
             controller.pauseCamera();
-            barCodeResult = result!.code!;
+            stateContext.getState().setBarcodeResult(stateContext.getState().getResult().code!);
           }
         });
       });
