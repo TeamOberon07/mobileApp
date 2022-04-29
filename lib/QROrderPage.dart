@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:dart_web3/dart_web3.dart';
@@ -22,8 +23,7 @@ class _QROrderPageState extends State<QROrderPage> {
   Widget build(BuildContext context) {
     String QRresult = stateContext.getState().getBarcodeResult()!;
     String OrderBuyer = QRresult.split(":")[0];
-
-    if (OrderBuyer != stateContext.getState().getAccount()) {
+    if (OrderBuyer.toLowerCase() != stateContext.getState().getAccount().toString()) {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
