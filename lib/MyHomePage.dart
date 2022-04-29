@@ -23,7 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SingleChildScrollView( child: Container(
+      body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/app-wallpaper1.png"),
@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ])),
         ),
       ),
-    ));
+    );
   }
 
   _walletConnect() async {
@@ -97,8 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (stateContext.getState().getAccount() != null) {
       return Column(children: [
         SizedBox(
-            height: 400,
-            width: 400,
+            height: MediaQuery.of(context).size.height*0.5,
+            width: MediaQuery.of(context).size.height*0.5,
             child: Image.asset("assets/LogoShopChainTest5.png", scale: 2.25)),
         Padding(
             padding: EdgeInsets.fromLTRB(50, 0, 50, 10),
@@ -154,8 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     return Column(children: [
       SizedBox(
-          height: 400,
-          width: 400,
+          height: MediaQuery.of(context).size.height*0.5,
+          width: MediaQuery.of(context).size.height*0.5,
           child: Image.asset(
             "assets/LogoShopChainTest5.png",
             scale: 2.0,
