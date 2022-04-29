@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dart_web3/dart_web3.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:enum_to_string/enum_to_string.dart';
 
 import 'MyHomePage.dart';
 import 'stateContext.dart';
+import 'order.dart';
+import 'orderState.dart';
 
 class QROrderPage extends StatefulWidget {
   @override
@@ -18,7 +20,7 @@ class _QROrderPageState extends State<QROrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    String QRresult = stateContext.getState().getBarcodeResult();
+    String QRresult = stateContext.getState().getBarcodeResult()!;
     String OrderBuyer = QRresult.split(":")[0];
 
     if (OrderBuyer != stateContext.getState().getAccount()) {
@@ -78,52 +80,30 @@ class _QROrderPageState extends State<QROrderPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting)
                       return Center(child: CircularProgressIndicator());
-                    dynamic order = snapshot.data;
-                    String seller = order[2].toString();
-                    seller = seller.substring(0, 5) +
-                        " ... " +
-                        seller.substring(seller.length - 5);
-                    String buyer = order[1].toString();
-                    buyer = buyer.substring(0, 5) +
-                        " ... " +
-                        buyer.substring(buyer.length - 5);
-                    String orderID = order[0].toString();
-                    String amount =
-                        EtherAmount.fromUnitAndValue(EtherUnit.wei, order[3])
-                            .getValueInUnit(EtherUnit.ether)
-                            .toString();
-                    String state = "";
+                    
+                    Order order = snapshot.data as Order;
+
                     Icon stateIcon;
-                    switch (order[4].toString()) {
-                      case "0":
-                        state = "Created";
-                        stateIcon = Icon(Icons.check_circle,
+                    switch (order.getState()) {
+                      case OrderState.created:
+                        stateIcon = const Icon(Icons.check_circle,
                             color: Colors.white, size: 50.0);
                         break;
-                      case "1":
-                        state = "Confirmed";
-                        stateIcon = Icon(Icons.verified,
+                      case OrderState.confirmed:
+                        stateIcon = const Icon(Icons.verified,
                             color: Colors.white, size: 50.0);
                         break;
-                      case "2":
-                        state = "Deleted";
+                      case OrderState.deleted:
                         stateIcon =
-                            Icon(Icons.delete, color: Colors.white, size: 50.0);
+                             const Icon(Icons.delete, color: Colors.white, size: 50.0);
                         break;
-                      case "3":
-                        state = "Asked Refund";
-                        stateIcon = Icon(Icons.assignment_return,
+                      case OrderState.asked_refund:
+                        stateIcon = const Icon(Icons.assignment_return,
                             color: Colors.white, size: 50.0);
                         break;
-                      case "4":
-                        state = "Refunded";
+                      case OrderState.refunded:
                         stateIcon =
-                            Icon(Icons.reply, color: Colors.white, size: 50.0);
-                        break;
-                      default:
-                        state = "Unknown State";
-                        stateIcon =
-                            Icon(Icons.error, color: Colors.white, size: 50.0);
+                            const Icon(Icons.reply, color: Colors.white, size: 50.0);
                         break;
                     }
                     return Column(
@@ -134,7 +114,7 @@ class _QROrderPageState extends State<QROrderPage> {
                               Icon(Icons.tag, color: Colors.white, size: 50.0),
                               Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("Order ID: $orderID",
+                              Text("Order ID: " + order.getId(),
                                   style: TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -148,7 +128,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                   color: Colors.white, size: 50.0),
                               Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("Seller: $seller",
+                              Text("Seller: " + order.getFormattedSeller(),
                                   style: TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -162,7 +142,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                   color: Colors.white, size: 50.0),
                               Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("Buyer: $buyer",
+                              Text("Buyer: " + order.getFormattedBuyer(),
                                   style: TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -176,7 +156,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                   child: Image.asset("assets/LogoAvaxMin.png",
                                       scale: 5),
                                   padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                              Text("Amount: $amount",
+                              Text("Amount: " + order.getAmount(),
                                   style: TextStyle(fontSize: 22)),
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -187,17 +167,17 @@ class _QROrderPageState extends State<QROrderPage> {
                           child: Row(
                             children: [
                               stateIcon,
-                              Padding(
+                              const Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("State: $state",
-                                  style: TextStyle(fontSize: 22))
+                              Text("State: " + EnumToString.convertToString(order.getState()),
+                                  style: const TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
                           ),
-                          padding: EdgeInsets.fromLTRB(22, 20, 20, 0),
+                          padding: const EdgeInsets.fromLTRB(22, 20, 20, 0),
                         ),
-                        SizedBox(height: 50),
-                        (state == "Created")
+                        const SizedBox(height: 50),
+                        (order.getState() == OrderState.created)
                             ? SizedBox(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -206,15 +186,15 @@ class _QROrderPageState extends State<QROrderPage> {
                                     textStyle: const TextStyle(
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
-                                  onPressed: () async => _confirmOrder(orderID),
-                                  child: Text("Confirm Order",
+                                  onPressed: () async => _confirmOrder(order.getId()),
+                                  child: const Text("Confirm Order",
                                       style: TextStyle(fontSize: 22)),
                                 ),
                                 width: 200,
                                 height: 75,
                               )
-                            : SizedBox(height: 0),
-                        (state == "Confirmed")
+                            : const SizedBox(height: 0),
+                        (order.getState() == OrderState.confirmed)
                             ? SizedBox(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -223,13 +203,13 @@ class _QROrderPageState extends State<QROrderPage> {
                                     textStyle: const TextStyle(
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
-                                  onPressed: () async => _askRefund(orderID),
-                                  child: Text("Ask for Refund"),
+                                  onPressed: () async => _askRefund(order.getId()),
+                                  child: const Text("Ask for Refund"),
                                 ),
                                 width: 200,
                                 height: 75,
                               )
-                            : SizedBox(height: 0),
+                            : const SizedBox(height: 0),
                       ],
                     );
                   })
@@ -271,7 +251,8 @@ class _QROrderPageState extends State<QROrderPage> {
     orders.forEach((element) => {
           if ((element[0]).toString() == id.toString()) {thisOrder = element}
         });
-    return thisOrder;
+    Order order = Order(id, EthereumAddress.fromHex(thisOrder[1].toString()), EthereumAddress.fromHex(thisOrder[2].toString()), thisOrder[4].toString(), thisOrder[3]);
+    return order;
     //return orders.where((element) => element[0] == id);
   }
 

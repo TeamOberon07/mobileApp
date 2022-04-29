@@ -68,16 +68,16 @@ class stateContext{
     credentials = _credentials;
   }
 
-  Barcode getResult(){
-    return _result!;
+  Barcode? getResult(){
+    return _result;
   }
 
   setResult(result){
     _result = result;
   }
   
-  String getBarcodeResult(){
-    return _barCodeResult!;
+  String? getBarcodeResult(){
+    return _barCodeResult;
   }
 
   setBarcodeResult(barCodeResult){
