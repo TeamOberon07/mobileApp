@@ -8,11 +8,8 @@ class Order{
   OrderState? _state;
   String? _amount;
 
-  Order(this._id, this._buyer, this._seller, String state, EtherAmount amount){
+  Order(this._id, this._buyer, this._seller, String state, this._amount){
     _state = OrderState.values[int.parse(state)];
-    _amount = EtherAmount.fromUnitAndValue(EtherUnit.wei, amount)
-                            .getValueInUnit(EtherUnit.ether)
-                            .toString();
   }
 
   String getFormattedBuyer(){

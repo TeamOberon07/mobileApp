@@ -251,9 +251,15 @@ class _QROrderPageState extends State<QROrderPage> {
     orders.forEach((element) => {
           if ((element[0]).toString() == id.toString()) {thisOrder = element}
         });
-    Order order = Order(id, EthereumAddress.fromHex(thisOrder[1].toString()), EthereumAddress.fromHex(thisOrder[2].toString()), thisOrder[4].toString(), thisOrder[3]);
+    Order order = 
+      Order(id, 
+            EthereumAddress.fromHex(thisOrder[1].toString()), 
+            EthereumAddress.fromHex(thisOrder[2].toString()), 
+            thisOrder[4].toString(), 
+            EtherAmount.fromUnitAndValue(EtherUnit.wei, thisOrder[3])
+                            .getValueInUnit(EtherUnit.ether).toString()
+            );
     return order;
-    //return orders.where((element) => element[0] == id);
   }
 
   void makeRoutePage(BuildContext context, Widget pageRef) {
