@@ -2,7 +2,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dart_web3/dart_web3.dart';
+import 'package:enum_to_string/enum_to_string.dart';
+
 import 'stateContext.dart';
+import 'order.dart';
+import 'orderState.dart';
 
 class OrdersPage extends StatelessWidget {
   @override
@@ -22,9 +26,10 @@ class OrdersPage extends StatelessWidget {
               FutureBuilder(
                   future: _getOrders(),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting)
-                      return Center(child: CircularProgressIndicator());
-                    dynamic orders = snapshot.data;
+                    if (snapshot.connectionState == ConnectionState.waiting){
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    List<Order> orders = snapshot.data as List<Order>;
                     List<Row> col = [
                       Row(
                         children: [
@@ -76,24 +81,7 @@ class OrdersPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                       ),
                     ];
-                    String seller = "";
-                    String amount = "";
-                    String state = "";
-                    Set<String> states = {
-                      "Created",
-                      "Confirmed",
-                      "Deleted",
-                      "Asked Refund",
-                      "Refunded"
-                    };
                     orders.forEach((element) => {
-                          seller = element[2].toString(),
-                          amount = EtherAmount.fromUnitAndValue(
-                                  EtherUnit.wei, element[3])
-                              .getValueInUnit(EtherUnit.ether)
-                              .toString(),
-                          state = states
-                              .elementAt(int.parse(element[4].toString())),
                           col.add(Row(
                             children: [
                               Container(
@@ -101,7 +89,7 @@ class OrdersPage extends StatelessWidget {
                                 height: 50,
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
-                                  element[0].toString(),
+                                  element.getId(),
                                   textAlign: TextAlign.center,
                                 ),
                                 color: Colors.white12,
@@ -110,10 +98,7 @@ class OrdersPage extends StatelessWidget {
                                 width: 120,
                                 height: 50,
                                 padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  seller.substring(0, 5) +
-                                      "..." +
-                                      seller.substring(seller.length - 5),
+                                child: Text(element.getFormattedSeller(),
                                   textAlign: TextAlign.center,
                                 ),
                                 color: Colors.white24,
@@ -123,7 +108,7 @@ class OrdersPage extends StatelessWidget {
                                 height: 50,
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
-                                  amount,
+                                  element.getAmount(),
                                   textAlign: TextAlign.center,
                                 ),
                                 color: Colors.white12,
@@ -133,7 +118,7 @@ class OrdersPage extends StatelessWidget {
                                 height: 50,
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
-                                  state,
+                                  EnumToString.convertToString(element.getState()),
                                   textAlign: TextAlign.center,
                                 ),
                                 color: Colors.white24,
@@ -151,9 +136,22 @@ class OrdersPage extends StatelessWidget {
     );
   }
 
-  Future<List<dynamic>> _getOrders() async {
-    List<dynamic> orders =
+  Future<List<Order>> _getOrders() async {
+    List<dynamic> rawOrders =
         await stateContext.getState().getEscrow().getOrdersOfUser(EthereumAddress.fromHex(stateContext.getState().getAccount()));
+    List<Order> orders = [];
+    rawOrders.forEach((element) => {
+      orders.add(
+        Order(
+          int.parse(element[0].toString()), 
+          EthereumAddress.fromHex(element[1].toString()),
+          EthereumAddress.fromHex(element[2].toString()),
+          element[4].toString(),
+          EtherAmount.fromUnitAndValue(EtherUnit.wei, element[3])
+                          .getValueInUnit(EtherUnit.ether).toString()
+          )
+        )
+    });
     return orders;
   }
 }
