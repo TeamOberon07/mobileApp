@@ -1,7 +1,7 @@
 import 'package:dart_web3/dart_web3.dart';
 import 'package:http/http.dart';
 
-import 'escrow.g.dart';
+import 'SCEscrow.g.dart';
 
 const String rpcUrl = 'https://api.avax-test.network/ext/bc/C/rpc';
 
@@ -21,7 +21,7 @@ Future<void> main() async {
   final ownAddress = await credentials.extractAddress();
 
   // read the contract abi and tell dart_web3 where it's deployed (contractAddr)
-  final escrow = Escrow(address: contractAddr, client: client);
+  final escrow = SCEscrow(address: contractAddr, client: client);
 
   // check our balance in MetaCoins by calling the appropriate function
   var balance = await escrow.getBalance();

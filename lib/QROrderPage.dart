@@ -89,6 +89,10 @@ class _QROrderPageState extends State<QROrderPage> {
                         stateIcon = const Icon(Icons.check_circle,
                             color: Colors.white, size: 50.0);
                         break;
+                      case OrderState.shipped:
+                        stateIcon = const Icon(Icons.local_shipping,
+                            color: Colors.white, size: 50.0);
+                        break;
                       case OrderState.confirmed:
                         stateIcon = const Icon(Icons.verified,
                             color: Colors.white, size: 50.0);
@@ -177,7 +181,7 @@ class _QROrderPageState extends State<QROrderPage> {
                           padding: const EdgeInsets.fromLTRB(22, 20, 20, 0),
                         ),
                         const SizedBox(height: 50),
-                        (order.getState() == OrderState.created)
+                        (order.getState() == OrderState.shipped)
                             ? SizedBox(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(

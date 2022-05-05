@@ -10,9 +10,9 @@ class stateContext{
     String? _barCodeResult;
 
     stateContext._internal(){
-     _rpcUrl = 'https://api.avax-test.network/ext/bc/C/rpc';
+     _rpcUrl = 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
     _contractAddr =
-    EthereumAddress.fromHex('0x1648471B1b56bd703de37216Aa298077628Dcf27');
+    EthereumAddress.fromHex('0x43475E700EA89b4082A21799Bf3eeA6C17717835');
      _barCodeResult = "";
   }
 

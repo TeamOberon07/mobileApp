@@ -4,7 +4,7 @@ import 'package:dart_web3/dart_web3.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'escrow.g.dart';
+import 'SCEscrow.g.dart';
 import 'EthereumCredentials.dart';
 import 'OrdersPage.dart';
 import 'QRScanPage.dart';
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Create a new session
     if (!connector.connected) {
       stateContext.getState().setSession(await connector.createSession(
-          chainId: 43113,
+          chainId: 4,
           onDisplayUri: (uri) async => {print(uri), await launch(uri)})); 
     }
 
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
       EthereumWalletConnectProvider provider =
           EthereumWalletConnectProvider(connector);
       stateContext.getState().setCredentials(WalletConnectEthereumCredentials(provider: provider));
-      stateContext.getState().setEscrow(Escrow(address: stateContext.getState().getContractAddr(), client: client));
+      stateContext.getState().setEscrow(SCEscrow(address: stateContext.getState().getContractAddr(), client: client));
     }
   }
 
