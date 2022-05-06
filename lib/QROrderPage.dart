@@ -18,6 +18,7 @@ class QROrderPage extends StatefulWidget {
 
 class _QROrderPageState extends State<QROrderPage> {
   get mainAxisAlignment => null;
+  Order? order;
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +82,10 @@ class _QROrderPageState extends State<QROrderPage> {
                     if (snapshot.connectionState == ConnectionState.waiting)
                       return Center(child: CircularProgressIndicator());
                     
-                    Order order = snapshot.data as Order;
+                    order = snapshot.data as Order;
 
                     Icon stateIcon;
-                    switch (order.getState()) {
+                    switch (order!.getState()) {
                       case OrderState.created:
                         stateIcon = const Icon(Icons.check_circle,
                             color: Colors.white, size: 50.0);
@@ -118,7 +119,7 @@ class _QROrderPageState extends State<QROrderPage> {
                               Icon(Icons.tag, color: Colors.white, size: 50.0),
                               Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("Order ID: " + order.getId(),
+                              Text("Order ID: " + order!.getId(),
                                   style: TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -132,7 +133,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                   color: Colors.white, size: 50.0),
                               Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("Seller: " + order.getFormattedSeller(),
+                              Text("Seller: " + order!.getFormattedSeller(),
                                   style: TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -146,7 +147,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                   color: Colors.white, size: 50.0),
                               Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("Buyer: " + order.getFormattedBuyer(),
+                              Text("Buyer: " + order!.getFormattedBuyer(),
                                   style: TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -160,7 +161,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                   child: Image.asset("assets/LogoAvaxMin.png",
                                       scale: 5),
                                   padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                              Text("Amount: " + order.getAmount(),
+                              Text("Amount: " + order!.getAmount(),
                                   style: TextStyle(fontSize: 22)),
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -173,7 +174,7 @@ class _QROrderPageState extends State<QROrderPage> {
                               stateIcon,
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("State: " + EnumToString.convertToString(order.getState()),
+                              Text("State: " + EnumToString.convertToString(order!.getState()),
                                   style: const TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -181,7 +182,7 @@ class _QROrderPageState extends State<QROrderPage> {
                           padding: const EdgeInsets.fromLTRB(22, 20, 20, 0),
                         ),
                         const SizedBox(height: 50),
-                        (order.getState() == OrderState.shipped)
+                        (order!.getState() == OrderState.shipped)
                             ? SizedBox(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -190,7 +191,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                     textStyle: const TextStyle(
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
-                                  onPressed: () async => _confirmOrder(order.getId()),
+                                  onPressed: () async => (){_confirmOrder(order!.getId()); setState(() {});},
                                   child: const Text("Confirm Order",
                                       style: TextStyle(fontSize: 22)),
                                 ),
@@ -198,7 +199,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                 height: 75,
                               )
                             : const SizedBox(height: 0),
-                        (order.getState() == OrderState.confirmed)
+                        (order!.getState() == OrderState.confirmed)
                             ? SizedBox(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -207,7 +208,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                     textStyle: const TextStyle(
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
-                                  onPressed: () async => _askRefund(order.getId()),
+                                  onPressed: () async => _askRefund(order!.getId()),
                                   child: const Text("Ask for Refund"),
                                 ),
                                 width: 200,
