@@ -65,7 +65,7 @@ class stateContext{
   }
 
   setCredentials(credentials){
-    credentials = _credentials;
+    _credentials = credentials;
   }
 
   Barcode? getResult(){
