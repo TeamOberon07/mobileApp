@@ -191,7 +191,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                     textStyle: const TextStyle(
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
-                                  onPressed: () async => (){_confirmOrder(order!.getId()); setState(() {});},
+                                  onPressed: () async {_confirmOrder(order!.getId()); },
                                   child: const Text("Confirm Order",
                                       style: TextStyle(fontSize: 22)),
                                 ),
