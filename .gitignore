@@ -21,3 +21,15 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.packages
+pubspec.lock
+pubspec.yaml
+.flutter-plugins-dependencies
+.flutter-plugins
+.dart_tool/version
+.dart_tool/package_config_subset
+.dart_tool/package_config.json
+.dart_tool/flutter_build/96332a9d7b75c70a0f0c8e9138265f3c/kernel_snapshot.stamp
+.dart_tool/flutter_build/96332a9d7b75c70a0f0c8e9138265f3c/kernel_snapshot.d
+.dart_tool/flutter_build/96332a9d7b75c70a0f0c8e9138265f3c/flutter_assets.d
+.dart_tool/flutter_build/96332a9d7b75c70a0f0c8e9138265f3c/debug_android_application.stamp

@@ -12,7 +12,7 @@ class stateContext{
     stateContext._internal(){
      _rpcUrl = 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
     _contractAddr =
-    EthereumAddress.fromHex('0x43475E700EA89b4082A21799Bf3eeA6C17717835');
+    EthereumAddress.fromHex('0xFDf572Ce0b87f7036f9F528FD55968348Bd86081');
      _barCodeResult = "";
   }
 
