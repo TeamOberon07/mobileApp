@@ -33,3 +33,14 @@ pubspec.yaml
 .dart_tool/flutter_build/96332a9d7b75c70a0f0c8e9138265f3c/kernel_snapshot.d
 .dart_tool/flutter_build/96332a9d7b75c70a0f0c8e9138265f3c/flutter_assets.d
 .dart_tool/flutter_build/96332a9d7b75c70a0f0c8e9138265f3c/debug_android_application.stamp
+.dart_tool/build/entrypoint/.packageLocations
+.dart_tool/build/entrypoint/build.dart.dill
+.dart_tool/build/fcd1995bc647fb959e82ea360c6c2c9a/asset_graph.json
+.dart_tool/package_config.json
+.dart_tool/package_config_subset
+.dart_tool/pub/bin/build_runner/build_runner.dart-2.16.2.snapshot
+.dart_tool/pub/incremental/build_runner/build_runner.dart.incremental.dill
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+pubspec.yaml
