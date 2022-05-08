@@ -159,7 +159,7 @@ class _QROrderPageState extends State<QROrderPage> {
                           child: Row(
                             children: [
                               Padding(
-                                  child: Image.asset("assets/LogoAvaxMin.png",
+                                  child: Image.asset("assets/coin.png",
                                       scale: 5),
                                   padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                               Text("Amount: " + order!.getAmount(),
