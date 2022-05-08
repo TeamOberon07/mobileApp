@@ -10,6 +10,7 @@ import 'MyHomePage.dart';
 import 'stateContext.dart';
 import 'order.dart';
 import 'orderState.dart';
+import 'log.dart';
 
 class QROrderPage extends StatefulWidget {
   @override
@@ -215,6 +216,23 @@ class _QROrderPageState extends State<QROrderPage> {
                                 height: 75,
                               )
                             : const SizedBox(height: 0),
+                        FutureBuilder(
+                          future: _getLog(order!),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting)
+                              return Center(child: CircularProgressIndicator());
+                            
+                            Log log = snapshot.data as Log;
+
+                            String logString = log.toString();
+                            return SingleChildScrollView(child: 
+                              Column(children: 
+                                log.getColumn()
+                              ),
+                            );                           
+
+                          }
+                        ),
                       ],
                     );
                   })
@@ -249,7 +267,7 @@ class _QROrderPageState extends State<QROrderPage> {
         credentials: stateContext.getState().getCredentials(), transaction: transaction);
   }
 
-  Future<dynamic> _getOrder(int id) async {
+  Future<Order> _getOrder(int id) async {
     List<dynamic> orders =
         await stateContext.getState().getEscrow().getOrdersOfUser(EthereumAddress.fromHex(stateContext.getState().getAccount()));
     dynamic thisOrder;
@@ -265,6 +283,15 @@ class _QROrderPageState extends State<QROrderPage> {
                             .getValueInUnit(EtherUnit.ether).toString()
             );
     return order;
+  }
+
+  Future<Log> _getLog(Order order) async {
+    List<dynamic> rawLog = await stateContext.getState().getEscrow().getLogsOfOrder(BigInt.from(int.parse(order.getId())));
+    Log log = Log();
+    rawLog.forEach((element) {
+      log.addElement(element);
+    });
+    return log;
   }
 
   void makeRoutePage(BuildContext context, Widget pageRef) {
