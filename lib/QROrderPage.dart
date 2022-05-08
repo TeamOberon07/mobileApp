@@ -226,9 +226,13 @@ class _QROrderPageState extends State<QROrderPage> {
 
                             String logString = log.toString();
                             return SingleChildScrollView(child: 
-                              Column(children: 
-                                log.getColumn()
-                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                child:
+                                  Column(children: 
+                                    log.getColumn()
+                                  ),
+                              )
                             );                           
 
                           }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'orderState.dart';
@@ -22,11 +24,18 @@ class Log{
     });
     return re;
   }
-  List<Text> getColumn(){
-    List<Text> list = [];
+  List<Row> getColumn(){
+    List<Row> list = [];
     _value.forEach((key, value) {
-      list.add(Text(EnumToString.convertToString(key)+" : " + DateFormat("dd/MM/yyyy - HH:mm").format(value), style: TextStyle(fontSize: 15)));
-    });
+      list.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(EnumToString.convertToString(key)+": ", style: TextStyle(fontSize: 20)),
+            Text(DateFormat("dd/MM/yyyy - HH:mm").format(value), style: TextStyle(fontFamily: 'Piazzolla', fontSize: 15, fontFeatures: [FontFeature.tabularFigures()]))
+        ])
+      );}
+    );
     return list;
   }
 }
