@@ -223,8 +223,7 @@ class _QROrderPageState extends State<QROrderPage> {
                               return Center(child: CircularProgressIndicator());
                             
                             Log log = snapshot.data as Log;
-
-                            String logString = log.toString();
+                            
                             return SingleChildScrollView(child: 
                               Padding(
                                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),

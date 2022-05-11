@@ -57,7 +57,7 @@ class stateContext {
   }
 
   setEscrow(escrow) {
-    _escrow = escrow;
+    _escrow = escrow; 
   }
 
   getCredentials() {

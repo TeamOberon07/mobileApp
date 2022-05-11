@@ -88,7 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
       final client = Web3Client(stateContext.getState().getRpcUrl(), Client());
       EthereumWalletConnectProvider provider =
           EthereumWalletConnectProvider(connector);
-      print("eccolo qua");
       stateContext.getState().setCredentials(WalletConnectEthereumCredentials(provider: provider));
       print(stateContext.getState().getCredentials());
       stateContext.getState().setEscrow(SCEscrow(address: stateContext.getState().getContractAddr(), client: client));
