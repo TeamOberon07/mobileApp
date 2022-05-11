@@ -120,10 +120,10 @@ class _QRScanPageState extends State<QRScanPage> {
           stateContext.getState().setResult(scanData);
           if (count == 0) {
             count++;
+            stateContext.getState().setBarcodeResult(stateContext.getState().getResult()!.code);  
             Navigator.of(context).pop();
             Navigator.of(context).push(_createRoute2());
             controller.pauseCamera();
-            stateContext.getState().setBarcodeResult(stateContext.getState().getResult()!.code);
           }
         });
       });

@@ -162,7 +162,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                   child: Image.asset("assets/coin.png",
                                       scale: 5),
                                   padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
-                              Text("Amount: " + order!.getAmount(),
+                              Text("Amount: \$" + order!.getAmount(),
                                   style: TextStyle(fontSize: 22)),
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -272,12 +272,7 @@ class _QROrderPageState extends State<QROrderPage> {
   }
 
   Future<Order> _getOrder(int id) async {
-    List<dynamic> orders =
-        await stateContext.getState().getEscrow().getOrdersOfUser(EthereumAddress.fromHex(stateContext.getState().getAccount()));
-    dynamic thisOrder;
-    orders.forEach((element) => {
-          if ((element[0]).toString() == id.toString()) {thisOrder = element}
-        });
+    dynamic thisOrder = await stateContext.getState().getEscrow().getOrder(BigInt.from(id));
     Order order = 
       Order(id, 
             EthereumAddress.fromHex(thisOrder[1].toString()), 
