@@ -68,6 +68,7 @@ class _QROrderPageState extends State<QROrderPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Your Order"),
+          backgroundColor: Color.fromRGBO(0, 0, 255, 0.35),
         ),
         body: Container(
           decoration: BoxDecoration(
