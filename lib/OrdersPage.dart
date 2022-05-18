@@ -21,18 +21,12 @@ class OrdersPage extends StatelessWidget {
             image: DecorationImage(
                 image: AssetImage("assets/app-wallpaper1.png"),
                 fit: BoxFit.cover)),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
+        child: 
               FutureBuilder(
                   future: _getOrders(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting){
-                      return Center(child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [ CircularProgressIndicator()]
-                      ));
+                      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [Center(child:  CircularProgressIndicator())]);
                     }
                     List<Order> orders = snapshot.data as List<Order>;
                     List<Row> col = [
@@ -113,7 +107,7 @@ class OrdersPage extends StatelessWidget {
                                 height: 50,
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
-                                  element.getAmount(),
+                                  element.getAmount() + "\$",
                                   textAlign: TextAlign.center,
                                 ),
                                 color: Colors.white12,
@@ -132,12 +126,9 @@ class OrdersPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                           ))
                         });
-                    return Column(children: col);
+                    return Column(children: [SingleChildScrollView(child: (Column(children: col)))]);
                   })
-            ],
-          ),
         ),
-      ),
     );
   }
 
@@ -161,12 +152,14 @@ class OrdersPage extends StatelessWidget {
       return orders;
     }
     catch(e){
+      print("almeno sono nel catch");
       if(e is SocketException){
         if(e.message == "Connection timed out"){
           print("ho capito tutto");
         }
-        print(e.message);
       }
+      print("errorissimo");
+      print(e);
       return [];
     }
   }

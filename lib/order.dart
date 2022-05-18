@@ -8,6 +8,8 @@ class Order{
   OrderState? _state;
   String? _amount;
 
+  Order.invalid():_id=-1, _buyer=null, _seller=null;
+
   Order(this._id, this._buyer, this._seller, String state, this._amount){
     _state = OrderState.values[int.parse(state)];
   }

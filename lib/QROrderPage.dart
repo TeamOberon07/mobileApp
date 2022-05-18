@@ -86,6 +86,10 @@ class _QROrderPageState extends State<QROrderPage> {
                     
                     order = snapshot.data as Order;
 
+                    if(order!.getId()=="-1"){
+                      return Center(child: Text("There may have been an error while loading the order, please try again", style: TextStyle(color: Colors.red)));
+                    }
+
                     Icon stateIcon;
                     switch (order!.getState()) {
                       case OrderState.created:
@@ -272,16 +276,22 @@ class _QROrderPageState extends State<QROrderPage> {
   }
 
   Future<Order> _getOrder(int id) async {
-    dynamic thisOrder = await stateContext.getState().getEscrow().getOrder(BigInt.from(id));
-    Order order = 
-      Order(id, 
-            EthereumAddress.fromHex(thisOrder[1].toString()), 
-            EthereumAddress.fromHex(thisOrder[2].toString()), 
-            thisOrder[4].toString(), 
-            EtherAmount.fromUnitAndValue(EtherUnit.wei, thisOrder[3])
-                            .getValueInUnit(EtherUnit.ether).toString()
-            );
-    return order;
+    try{
+      dynamic thisOrder = await stateContext.getState().getEscrow().getOrder(BigInt.from(id));
+      Order order = 
+        Order(id, 
+              EthereumAddress.fromHex(thisOrder[1].toString()), 
+              EthereumAddress.fromHex(thisOrder[2].toString()), 
+              thisOrder[4].toString(), 
+              EtherAmount.fromUnitAndValue(EtherUnit.wei, thisOrder[3])
+                              .getValueInUnit(EtherUnit.ether).toString()
+              );
+      return order;
+    }
+    catch(e){
+      print(e);
+      return Order.invalid();
+    }
   }
 
   Future<Log> _getLog(Order order) async {
