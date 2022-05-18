@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dart_web3/dart_web3.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -27,7 +28,11 @@ class OrdersPage extends StatelessWidget {
                   future: _getOrders(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting){
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [ CircularProgressIndicator()]
+                      ));
                     }
                     List<Order> orders = snapshot.data as List<Order>;
                     List<Row> col = [
@@ -137,21 +142,32 @@ class OrdersPage extends StatelessWidget {
   }
 
   Future<List<Order>> _getOrders() async {
-    List<dynamic> rawOrders =
-        await stateContext.getState().getEscrow().getOrdersOfUser(EthereumAddress.fromHex(stateContext.getState().getAccount()));
-    List<Order> orders = [];
-    rawOrders.forEach((element) => {
-      orders.add(
-        Order(
-          int.parse(element[0].toString()), 
-          EthereumAddress.fromHex(element[1].toString()),
-          EthereumAddress.fromHex(element[2].toString()),
-          element[4].toString(),
-          EtherAmount.fromUnitAndValue(EtherUnit.wei, element[3])
-                          .getValueInUnit(EtherUnit.ether).toString()
+    try{
+      List<dynamic> rawOrders =
+          await stateContext.getState().getEscrow().getOrdersOfUser(EthereumAddress.fromHex(stateContext.getState().getAccount()));
+      List<Order> orders = [];
+      rawOrders.forEach((element) => {
+        orders.add(
+          Order(
+            int.parse(element[0].toString()), 
+            EthereumAddress.fromHex(element[1].toString()),
+            EthereumAddress.fromHex(element[2].toString()),
+            element[4].toString(),
+            EtherAmount.fromUnitAndValue(EtherUnit.wei, element[3])
+                            .getValueInUnit(EtherUnit.ether).toString()
+            )
           )
-        )
-    });
-    return orders;
+      });
+      return orders;
+    }
+    catch(e){
+      if(e is SocketException){
+        if(e.message == "Connection timed out"){
+          print("ho capito tutto");
+        }
+        print(e.message);
+      }
+      return [];
+    }
   }
 }

@@ -215,10 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Route _createRoute3() {
-    // reset QRCode scan results
-    stateContext.getState().setResult(null);
-    stateContext.getState().setBarcodeResult("");
-
+    
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => OrdersPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
