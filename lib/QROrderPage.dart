@@ -215,7 +215,9 @@ class _QROrderPageState extends State<QROrderPage> {
                                 height: 75,
                               )
                             : const SizedBox(height: 0),
-                        (order!.getState() == OrderState.Confirmed)
+                        (order!.getState() == OrderState.Created ||
+                                order!.getState() == OrderState.Shipped ||
+                                order!.getState() == OrderState.Confirmed)
                             ? SizedBox(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
