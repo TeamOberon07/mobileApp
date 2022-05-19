@@ -25,7 +25,8 @@ class _QROrderPageState extends State<QROrderPage> {
   Widget build(BuildContext context) {
     String QRresult = stateContext.getState().getBarcodeResult()!;
     String OrderBuyer = QRresult.split(":")[0];
-    if (OrderBuyer.toLowerCase() != stateContext.getState().getAccount().toString()) {
+    if (OrderBuyer.toLowerCase() !=
+        stateContext.getState().getAccount().toString()) {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -83,38 +84,41 @@ class _QROrderPageState extends State<QROrderPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting)
                       return Center(child: CircularProgressIndicator());
-                    
+
                     order = snapshot.data as Order;
 
-                    if(order!.getId()=="-1"){
-                      return Center(child: Text("There may have been an error while loading the order, please try again", style: TextStyle(color: Colors.red)));
+                    if (order!.getId() == "-1" || order == null) {
+                      return Center(
+                          child: Text(
+                              "There may have been an error while loading the order, please try again",
+                              style: TextStyle(color: Colors.red)));
                     }
 
                     Icon stateIcon;
                     switch (order!.getState()) {
-                      case OrderState.created:
+                      case OrderState.Created:
                         stateIcon = const Icon(Icons.check_circle,
                             color: Colors.white, size: 50.0);
                         break;
-                      case OrderState.shipped:
+                      case OrderState.Shipped:
                         stateIcon = const Icon(Icons.local_shipping,
                             color: Colors.white, size: 50.0);
                         break;
-                      case OrderState.confirmed:
+                      case OrderState.Confirmed:
                         stateIcon = const Icon(Icons.verified,
                             color: Colors.white, size: 50.0);
                         break;
-                      case OrderState.deleted:
-                        stateIcon =
-                             const Icon(Icons.delete, color: Colors.white, size: 50.0);
+                      case OrderState.Deleted:
+                        stateIcon = const Icon(Icons.delete,
+                            color: Colors.white, size: 50.0);
                         break;
-                      case OrderState.asked_refund:
+                      case OrderState.Asked_Refund:
                         stateIcon = const Icon(Icons.assignment_return,
                             color: Colors.white, size: 50.0);
                         break;
-                      case OrderState.refunded:
-                        stateIcon =
-                            const Icon(Icons.reply, color: Colors.white, size: 50.0);
+                      case OrderState.Refunded:
+                        stateIcon = const Icon(Icons.reply,
+                            color: Colors.white, size: 50.0);
                         break;
                     }
                     return Column(
@@ -164,8 +168,8 @@ class _QROrderPageState extends State<QROrderPage> {
                           child: Row(
                             children: [
                               Padding(
-                                  child: Image.asset("assets/coin.png",
-                                      scale: 5),
+                                  child:
+                                      Image.asset("assets/coin.png", scale: 5),
                                   padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
                               Text("Amount: \$" + order!.getAmount(),
                                   style: TextStyle(fontSize: 22)),
@@ -180,7 +184,11 @@ class _QROrderPageState extends State<QROrderPage> {
                               stateIcon,
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                              Text("State: " + EnumToString.convertToString(order!.getState()),
+                              Text(
+                                  "State: " +
+                                      EnumToString.convertToString(
+                                              order!.getState())
+                                          .replaceAll('_', ' '),
                                   style: const TextStyle(fontSize: 22))
                             ],
                             //mainAxisAlignment: MainAxisAlignment.center
@@ -188,7 +196,7 @@ class _QROrderPageState extends State<QROrderPage> {
                           padding: const EdgeInsets.fromLTRB(22, 20, 20, 0),
                         ),
                         const SizedBox(height: 50),
-                        (order!.getState() == OrderState.shipped)
+                        (order!.getState() == OrderState.Shipped)
                             ? SizedBox(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -197,7 +205,9 @@ class _QROrderPageState extends State<QROrderPage> {
                                     textStyle: const TextStyle(
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
-                                  onPressed: () async {_confirmOrder(order!.getId()); },
+                                  onPressed: () async {
+                                    _confirmOrder(order!.getId());
+                                  },
                                   child: const Text("Confirm Order",
                                       style: TextStyle(fontSize: 22)),
                                 ),
@@ -205,7 +215,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                 height: 75,
                               )
                             : const SizedBox(height: 0),
-                        (order!.getState() == OrderState.confirmed)
+                        (order!.getState() == OrderState.Confirmed)
                             ? SizedBox(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -214,33 +224,33 @@ class _QROrderPageState extends State<QROrderPage> {
                                     textStyle: const TextStyle(
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
-                                  onPressed: () async => _askRefund(order!.getId()),
+                                  onPressed: () async =>
+                                      _askRefund(order!.getId()),
                                   child: const Text("Ask for Refund"),
                                 ),
                                 width: 200,
                                 height: 75,
                               )
                             : const SizedBox(height: 0),
-                        FutureBuilder(
-                          future: _getLog(order!),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting)
-                              return Center(child: CircularProgressIndicator());
-                            
-                            Log log = snapshot.data as Log;
-                            
-                            return SingleChildScrollView(child: 
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                child:
-                                  Column(children: 
-                                    log.getColumn()
-                                  ),
-                              )
-                            );                           
-
-                          }
+                        SizedBox(
+                          height: 30,
                         ),
+                        FutureBuilder(
+                            future: _getLog(order!),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting)
+                                return Center(
+                                    child: CircularProgressIndicator());
+
+                              Log log = snapshot.data as Log;
+
+                              return SingleChildScrollView(
+                                  child: Padding(
+                                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                                child: Column(children: log.getColumn()),
+                              ));
+                            }),
                       ],
                     );
                   })
@@ -258,8 +268,10 @@ class _QROrderPageState extends State<QROrderPage> {
 
     launch("https://metamask.app.link/");
 
-    String returned = await stateContext.getState().getEscrow().confirmOrder(BigInt.parse(orderID),
-        credentials: stateContext.getState().getCredentials(), transaction: transaction);
+    String returned = await stateContext.getState().getEscrow().confirmOrder(
+        BigInt.parse(orderID),
+        credentials: stateContext.getState().getCredentials(),
+        transaction: transaction);
   }
 
   Future<void> _askRefund(String orderID) async {
@@ -271,31 +283,36 @@ class _QROrderPageState extends State<QROrderPage> {
 
     launch("https://metamask.app.link/");
 
-    String returned = await stateContext.getState().getEscrow().askRefund(BigInt.parse(orderID),
-        credentials: stateContext.getState().getCredentials(), transaction: transaction);
+    String returned = await stateContext.getState().getEscrow().askRefund(
+        BigInt.parse(orderID),
+        credentials: stateContext.getState().getCredentials(),
+        transaction: transaction);
   }
 
   Future<Order> _getOrder(int id) async {
-    try{
-      dynamic thisOrder = await stateContext.getState().getEscrow().getOrder(BigInt.from(id));
-      Order order = 
-        Order(id, 
-              EthereumAddress.fromHex(thisOrder[1].toString()), 
-              EthereumAddress.fromHex(thisOrder[2].toString()), 
-              thisOrder[4].toString(), 
-              EtherAmount.fromUnitAndValue(EtherUnit.wei, thisOrder[3])
-                              .getValueInUnit(EtherUnit.ether).toString()
-              );
+    try {
+      dynamic thisOrder =
+          await stateContext.getState().getEscrow().getOrder(BigInt.from(id));
+      Order order = Order(
+          id,
+          EthereumAddress.fromHex(thisOrder[1].toString()),
+          EthereumAddress.fromHex(thisOrder[2].toString()),
+          thisOrder[4].toString(),
+          EtherAmount.fromUnitAndValue(EtherUnit.wei, thisOrder[3])
+              .getValueInUnit(EtherUnit.ether)
+              .toString());
       return order;
-    }
-    catch(e){
+    } catch (e) {
       print(e);
       return Order.invalid();
     }
   }
 
   Future<Log> _getLog(Order order) async {
-    List<dynamic> rawLog = await stateContext.getState().getEscrow().getLogsOfOrder(BigInt.from(int.parse(order.getId())));
+    List<dynamic> rawLog = await stateContext
+        .getState()
+        .getEscrow()
+        .getLogsOfOrder(BigInt.from(int.parse(order.getId())));
     Log log = Log();
     rawLog.forEach((element) {
       log.addElement(element);

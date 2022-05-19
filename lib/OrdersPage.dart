@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -17,144 +16,148 @@ class OrdersPage extends StatelessWidget {
         title: Text("Your Orders"),
       ),
       body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/app-wallpaper1.png"),
-                fit: BoxFit.cover)),
-        child: 
-              FutureBuilder(
-                  future: _getOrders(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting){
-                      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [Center(child:  CircularProgressIndicator())]);
-                    }
-                    List<Order> orders = snapshot.data as List<Order>;
-                    List<Row> col = [
-                      Row(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/app-wallpaper1.png"),
+                  fit: BoxFit.cover)),
+          child: FutureBuilder(
+              future: _getOrders(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Center(child: CircularProgressIndicator())]);
+                }
+                List<Order> orders = snapshot.data as List<Order>;
+                List<Row> col = [
+                  Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 50,
+                        padding: const EdgeInsets.all(8),
+                        child: const Text(
+                          "ID",
+                          style: TextStyle(fontSize: 23),
+                          textAlign: TextAlign.center,
+                        ),
+                        color: Colors.white24,
+                      ),
+                      Container(
+                        width: 120,
+                        height: 50,
+                        padding: const EdgeInsets.all(8),
+                        child: const Text(
+                          "Seller",
+                          style: TextStyle(fontSize: 23),
+                          textAlign: TextAlign.center,
+                        ),
+                        color: Colors.white12,
+                      ),
+                      Container(
+                        width: 80,
+                        height: 50,
+                        padding: const EdgeInsets.all(8),
+                        child: const Text(
+                          "Amnt",
+                          style: TextStyle(fontSize: 23),
+                          textAlign: TextAlign.center,
+                        ),
+                        color: Colors.white24,
+                      ),
+                      Container(
+                        width: 120,
+                        height: 50,
+                        padding: const EdgeInsets.all(8),
+                        child: const Text(
+                          "State",
+                          style: TextStyle(fontSize: 23),
+                          textAlign: TextAlign.center,
+                        ),
+                        color: Colors.white12,
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                ];
+                orders.forEach((element) => {
+                      col.add(Row(
                         children: [
                           Container(
                             width: 40,
                             height: 50,
                             padding: const EdgeInsets.all(8),
-                            child: const Text(
-                              "ID",
-                              style: TextStyle(fontSize: 23),
+                            child: Text(
+                              element.getId(),
                               textAlign: TextAlign.center,
                             ),
-                            color: Colors.white24,
+                            color: Colors.white12,
                           ),
                           Container(
                             width: 120,
                             height: 50,
                             padding: const EdgeInsets.all(8),
-                            child: const Text(
-                              "Seller",
-                              style: TextStyle(fontSize: 23),
+                            child: Text(
+                              element.getFormattedSeller(),
                               textAlign: TextAlign.center,
                             ),
-                            color: Colors.white12,
+                            color: Colors.white24,
                           ),
                           Container(
                             width: 80,
                             height: 50,
                             padding: const EdgeInsets.all(8),
-                            child: const Text(
-                              "Amnt",
-                              style: TextStyle(fontSize: 23),
+                            child: Text(
+                              element.getAmount() + "\$",
                               textAlign: TextAlign.center,
                             ),
-                            color: Colors.white24,
+                            color: Colors.white12,
                           ),
                           Container(
                             width: 120,
                             height: 50,
                             padding: const EdgeInsets.all(8),
-                            child: const Text(
-                              "State",
-                              style: TextStyle(fontSize: 23),
+                            child: Text(
+                              EnumToString.convertToString(element.getState()),
                               textAlign: TextAlign.center,
                             ),
-                            color: Colors.white12,
+                            color: Colors.white24,
                           ),
                         ],
                         mainAxisAlignment: MainAxisAlignment.center,
-                      ),
-                    ];
-                    orders.forEach((element) => {
-                          col.add(Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 50,
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  element.getId(),
-                                  textAlign: TextAlign.center,
-                                ),
-                                color: Colors.white12,
-                              ),
-                              Container(
-                                width: 120,
-                                height: 50,
-                                padding: const EdgeInsets.all(8),
-                                child: Text(element.getFormattedSeller(),
-                                  textAlign: TextAlign.center,
-                                ),
-                                color: Colors.white24,
-                              ),
-                              Container(
-                                width: 80,
-                                height: 50,
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  element.getAmount() + "\$",
-                                  textAlign: TextAlign.center,
-                                ),
-                                color: Colors.white12,
-                              ),
-                              Container(
-                                width: 120,
-                                height: 50,
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  EnumToString.convertToString(element.getState()),
-                                  textAlign: TextAlign.center,
-                                ),
-                                color: Colors.white24,
-                              ),
-                            ],
-                            mainAxisAlignment: MainAxisAlignment.center,
-                          ))
-                        });
-                    return Column(children: [SingleChildScrollView(child: (Column(children: col)))]);
-                  })
-        ),
+                      ))
+                    });
+                return Column(children: [
+                  SizedBox(height: 20),
+                  SingleChildScrollView(child: (Column(children: col)))
+                ]);
+              })),
     );
   }
 
   Future<List<Order>> _getOrders() async {
-    try{
-      List<dynamic> rawOrders =
-          await stateContext.getState().getEscrow().getOrdersOfUser(EthereumAddress.fromHex(stateContext.getState().getAccount()));
+    try {
+      List<dynamic> rawOrders = await stateContext
+          .getState()
+          .getEscrow()
+          .getOrdersOfUser(
+              EthereumAddress.fromHex(stateContext.getState().getAccount()));
       List<Order> orders = [];
       rawOrders.forEach((element) => {
-        orders.add(
-          Order(
-            int.parse(element[0].toString()), 
-            EthereumAddress.fromHex(element[1].toString()),
-            EthereumAddress.fromHex(element[2].toString()),
-            element[4].toString(),
-            EtherAmount.fromUnitAndValue(EtherUnit.wei, element[3])
-                            .getValueInUnit(EtherUnit.ether).toString()
-            )
-          )
-      });
+            orders.add(Order(
+                int.parse(element[0].toString()),
+                EthereumAddress.fromHex(element[1].toString()),
+                EthereumAddress.fromHex(element[2].toString()),
+                element[4].toString(),
+                EtherAmount.fromUnitAndValue(EtherUnit.wei, element[3])
+                    .getValueInUnit(EtherUnit.ether)
+                    .toString()))
+          });
       return orders;
-    }
-    catch(e){
+    } catch (e) {
       print("almeno sono nel catch");
-      if(e is SocketException){
-        if(e.message == "Connection timed out"){
+      if (e is SocketException) {
+        if (e.message == "Connection timed out") {
           print("ho capito tutto");
         }
       }

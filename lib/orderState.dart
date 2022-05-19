@@ -1,8 +1,8 @@
-enum OrderState{
-  created,
-  shipped,
-  confirmed,
-  deleted,
-  asked_refund,
-  refunded,
+enum OrderState {
+  Created,
+  Shipped,
+  Confirmed,
+  Deleted,
+  Asked_Refund,
+  Refunded,
 }
