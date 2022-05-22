@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:dart_web3/dart_web3.dart';
@@ -19,6 +18,8 @@ class QROrderPage extends StatefulWidget {
 
 class _QROrderPageState extends State<QROrderPage> {
   get mainAxisAlignment => null;
+
+  //variabile contenente l'ordine che viene letto dal QR
   Order? order;
 
   @override
@@ -27,6 +28,7 @@ class _QROrderPageState extends State<QROrderPage> {
     String OrderBuyer = QRresult.split(":")[0];
     if (OrderBuyer.toLowerCase() !=
         stateContext.getState().getAccount().toString()) {
+      //l'utente connesso al wallet non è il Buyer dell'ordine e viene presentato un errore di conseguenza
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -49,6 +51,7 @@ class _QROrderPageState extends State<QROrderPage> {
                   width: 300,
                   height: 100,
                   child: ElevatedButton(
+                      //bottone che permette di ritornare alla home page e riprovare lo scan
                       onPressed: () => {
                             stateContext.getState().setBarcodeResult(""),
                             makeRoutePage(
@@ -64,7 +67,7 @@ class _QROrderPageState extends State<QROrderPage> {
         ),
       );
     }
-
+    //scansione avvenuta correttamente e Buyer combacia, si può procedere a presentare l'ordine
     //List orders = escrow.getOrdersOfUser();
     return Scaffold(
         appBar: AppBar(
@@ -80,21 +83,29 @@ class _QROrderPageState extends State<QROrderPage> {
             children: [
               Padding(padding: EdgeInsets.fromLTRB(0, 30, 0, 0)),
               FutureBuilder(
+                  //viene prelevato l'id dell'ordine e chiamata la funzione che ne ottiene i dati
                   future: _getOrder(int.parse(QRresult.split(":")[1])),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting)
+                    if (snapshot.connectionState == ConnectionState.waiting){
+                      //l'app è ancore in attesa del risultato della chiamata asincrona che interroga lo smart contract e quindi
+                      //presenta un indicatore di caricamento
                       return Center(child: CircularProgressIndicator());
+                    }
 
+                    //il risultato della funzione può essere castato come Order
                     order = snapshot.data as Order;
 
                     if (order!.getId() == "-1" || order == null) {
+                      //in questi casi si è verificato un errore e perciò non è possibile mostrare i dettagli dell'ordine
                       return Center(
                           child: Text(
                               "There may have been an error while loading the order, please try again",
                               style: TextStyle(color: Colors.red)));
                     }
 
+                    //l'ordine è stato ottenuto con successo
                     Icon stateIcon;
+                    //viene selezionata un'icona in base all'ordine
                     switch (order!.getState()) {
                       case OrderState.Created:
                         stateIcon = const Icon(Icons.check_circle,
@@ -185,6 +196,7 @@ class _QROrderPageState extends State<QROrderPage> {
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
                               Text(
+                                  //questa chimata permette di stampare i valori dell'enum OrderState come stringhe
                                   "State: " +
                                       EnumToString.convertToString(
                                               order!.getState())
@@ -196,6 +208,7 @@ class _QROrderPageState extends State<QROrderPage> {
                           padding: const EdgeInsets.fromLTRB(22, 20, 20, 0),
                         ),
                         const SizedBox(height: 50),
+                        //se l'ordine si trova in stato shipped, va data la possibilità di confermare la ricezione
                         (order!.getState() == OrderState.Shipped)
                             ? SizedBox(
                                 child: ElevatedButton(
@@ -215,6 +228,7 @@ class _QROrderPageState extends State<QROrderPage> {
                                 height: 75,
                               )
                             : const SizedBox(height: 0),
+                        //in base allo stato è possibile presentare anche l'opzione richiesta reso
                         (order!.getState() == OrderState.Created ||
                                 order!.getState() == OrderState.Shipped ||
                                 order!.getState() == OrderState.Confirmed)
@@ -238,6 +252,7 @@ class _QROrderPageState extends State<QROrderPage> {
                           height: 30,
                         ),
                         FutureBuilder(
+                          //futureBuilder permette di attendere il risultato della chiamata dei log per poi presentarli all'utente
                             future: _getLog(order!),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
@@ -261,6 +276,7 @@ class _QROrderPageState extends State<QROrderPage> {
         ));
   }
 
+  //questa funzione costruisce la transazione di conferma ed avvia l'app MetaMask
   Future<void> _confirmOrder(String orderID) async {
     final transaction = Transaction(
       to: stateContext.getState().getContractAddr(),
@@ -276,6 +292,7 @@ class _QROrderPageState extends State<QROrderPage> {
         transaction: transaction);
   }
 
+  //questa funzione costruisce la transazione di richiesta reso ed avvia l'app MetaMask
   Future<void> _askRefund(String orderID) async {
     final transaction = Transaction(
       to: stateContext.getState().getContractAddr(),
@@ -291,6 +308,7 @@ class _QROrderPageState extends State<QROrderPage> {
         transaction: transaction);
   }
 
+  //chiamata allo smart contract che richiede i dati di uno specifico ordine per poi inserirli in un'istanza della classe Order.dart
   Future<Order> _getOrder(int id) async {
     try {
       dynamic thisOrder =
@@ -310,6 +328,7 @@ class _QROrderPageState extends State<QROrderPage> {
     }
   }
 
+  //chiamata allo smart contract che richiede i log di uno specifico ordine per poi inserirli in un'istanza della classe Log.dart
   Future<Log> _getLog(Order order) async {
     List<dynamic> rawLog = await stateContext
         .getState()

@@ -6,7 +6,6 @@ import 'package:enum_to_string/enum_to_string.dart';
 
 import 'stateContext.dart';
 import 'order.dart';
-import 'orderState.dart';
 
 class OrdersPage extends StatelessWidget {
   @override
@@ -21,14 +20,20 @@ class OrdersPage extends StatelessWidget {
                   image: AssetImage("assets/app-wallpaper1.png"),
                   fit: BoxFit.cover)),
           child: FutureBuilder(
+              //futureBuilder si mette in attesa della risposta della funzione asincrona getOrders
               future: _getOrders(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
+                  //la funzione non ha ancora completato il suo corso e perciò va indicato il caricamento
                   return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [Center(child: CircularProgressIndicator())]);
                 }
+
+                //il risultato è castabile come List<Order>
                 List<Order> orders = snapshot.data as List<Order>;
+
+                //inizializzazione della riga di intestazione
                 List<Row> col = [
                   Row(
                     children: [
@@ -80,6 +85,7 @@ class OrdersPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                   ),
                 ];
+                //per ogni ordine viene creata la riga che lo rappresenta ed aggiunta alla lista di righe della tabella
                 orders.forEach((element) => {
                       col.add(Row(
                         children: [
@@ -118,7 +124,7 @@ class OrdersPage extends StatelessWidget {
                             height: 50,
                             padding: const EdgeInsets.all(8),
                             child: Text(
-                              EnumToString.convertToString(element.getState()),
+                              EnumToString.convertToString(element.getState()).replaceAll('_', ' '),
                               textAlign: TextAlign.center,
                             ),
                             color: Colors.white24,
@@ -135,6 +141,7 @@ class OrdersPage extends StatelessWidget {
     );
   }
 
+  //funzione asincrona il cui scopo consiste nell'ottenere la lista degli ordini di cui il wallet loggato è il Buyer
   Future<List<Order>> _getOrders() async {
     try {
       List<dynamic> rawOrders = await stateContext
@@ -143,6 +150,8 @@ class OrdersPage extends StatelessWidget {
           .getOrdersOfUser(
               EthereumAddress.fromHex(stateContext.getState().getAccount()));
       List<Order> orders = [];
+
+      //gli ordini ottenuti dallo smart contract vengono convertiti in Order.dart
       rawOrders.forEach((element) => {
             orders.add(Order(
                 int.parse(element[0].toString()),
@@ -155,13 +164,12 @@ class OrdersPage extends StatelessWidget {
           });
       return orders;
     } catch (e) {
-      print("almeno sono nel catch");
       if (e is SocketException) {
         if (e.message == "Connection timed out") {
-          print("ho capito tutto");
+          print("error Message: Connection timed out");
         }
       }
-      print("errorissimo");
+      print("error SocketException");
       print(e);
       return [];
     }

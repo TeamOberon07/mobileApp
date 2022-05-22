@@ -17,8 +17,8 @@ class _QRScanPageState extends State<QRScanPage> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
+  //funzionamento hot reload android: mettere in pausa la fotocamera
+  //funzionamento hot reload iOS: far ripartire
   @override
   void reassemble() {
     super.reassemble();
@@ -42,6 +42,7 @@ class _QRScanPageState extends State<QRScanPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   if (stateContext.getState().getResult() == null)
+                    //risultato assente
                     const Padding(
                         child: Text('Scan a code...',
                             style: TextStyle(fontSize: 10)),
@@ -56,6 +57,7 @@ class _QRScanPageState extends State<QRScanPage> {
                             future: controller?.getFlashStatus(),
                             builder: (context, snapshot) {
                               if (snapshot.data != true) {
+                                //flash attivo
                                 return ElevatedButton(
                                     onPressed: () async {
                                       await controller?.toggleFlash();
@@ -65,6 +67,7 @@ class _QRScanPageState extends State<QRScanPage> {
                                     style: ElevatedButton.styleFrom(
                                         primary: Colors.black));
                               }
+                              //flash disattivato
                               return ElevatedButton(
                                   onPressed: () async {
                                     await controller?.toggleFlash();
@@ -88,6 +91,7 @@ class _QRScanPageState extends State<QRScanPage> {
     );
   }
 
+  //costruzione della visualizzazione fotocamera che permette di inquadrare il QR Code
   Widget _buildQrView(BuildContext context) {
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
@@ -111,14 +115,17 @@ class _QRScanPageState extends State<QRScanPage> {
       setState(() {
         this.controller = controller;
       });
+      //il controller di mette in ascolto attendendo l'inquadratura di un QR valido
       controller.scannedDataStream.listen((scanData) {
         var count = 0;
+        //ciò che è stato scannerizzato va nello stateContext
         setState(() {
           stateContext.getState().setResult(scanData);
           if (count == 0) {
             count++;
             stateContext.getState().setBarcodeResult(stateContext.getState().getResult()!.code);  
             Navigator.of(context).pop();
+            //apertura della pagina successiva (visualizzazione ordine)
             Navigator.of(context).push(_createRoute2());
             controller.pauseCamera();
           }
@@ -127,6 +134,7 @@ class _QRScanPageState extends State<QRScanPage> {
     }
   }
 
+  //funzione che permette il cambio di pagina su flutter, crea una nuova istanza del widget della pagina successiva (QROrderPage)
   Route _createRoute2() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => QROrderPage(),

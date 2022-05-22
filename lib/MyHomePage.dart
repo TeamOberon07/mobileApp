@@ -58,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _walletConnect() async {
+    //funzione che permette la connessione al wallet utente, si basa sulla libreria wallet_connect.dart
     final connector = WalletConnect(
       bridge: 'https://bridge.walletconnect.org',
       clientMeta: const PeerMeta(
@@ -81,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
           onDisplayUri: (uri) async => {print(uri), await launch(uri)})); 
     }
 
+    //l'account restituito da MetaMask viene aggiunto allo statContext
     setState(() {
       stateContext.getState().setAccount(stateContext.getState().getSession().accounts[0]);
     });
@@ -94,8 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  //funzione che permette la creazione di bottoni per le azioni possibili per l'utente al momento
+  //utente che non ha eseguito l'accesso: connesione al wallet
+  //utente che ha eseguito l'accesso: scan QR e visualizzazione ordini
   Column _getButtons() {
     if (stateContext.getState().getAccount() != null) {
+      //l'utente deve ancora fare l'accesso
       return Column(children: [
         SizedBox(
             height: MediaQuery.of(context).size.height*0.5,
@@ -153,6 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       ]);
     }
+    //l'utente ha eseguito l'accesso e perciò è possibile effettuare chiamate allo smart contract
     return Column(children: [
       SizedBox(
           height: MediaQuery.of(context).size.height*0.5,
@@ -190,11 +197,12 @@ class _MyHomePageState extends State<MyHomePage> {
     ]);
   }
 
-  Route _createRoute1() {  stateContext.getState().setResult(null);
-    stateContext.getState().setBarcodeResult("");
+  //funzione che permette il cambio di pagina su flutter, crea una nuova istanza del widget della pagina successiva (QRScanPage)
+  Route _createRoute1() {  
     // reset QRCode scan results
-  
-
+    stateContext.getState().setResult(null);
+    stateContext.getState().setBarcodeResult("");
+    
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
           const QRScanPage(),
@@ -214,6 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  //funzione che permette il cambio di pagina su flutter, crea una nuova istanza del widget della pagina successiva (OrdersPage)
   Route _createRoute3() {
     
     return PageRouteBuilder(

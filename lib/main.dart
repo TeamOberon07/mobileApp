@@ -8,7 +8,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  // Widget radice dell'applicazione
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
         scaffoldBackgroundColor: const Color.fromRGBO(27, 27, 27, 1.0),
+        //font scelto per parallelismo con la webApp
         fontFamily: 'Poppins',
         textTheme: TextTheme(
           bodyText1: TextStyle(),

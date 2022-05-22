@@ -2,11 +2,11 @@ import 'package:dart_web3/dart_web3.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class stateContext {
-  static stateContext? _stateContext;
-  String? _rpcUrl;
-  EthereumAddress? _contractAddr;
+  static stateContext? _stateContext;       //istanza unica di stateContext
+  String? _rpcUrl;                     //nodo della blockchain al quale vengono inviate le richieste per ottenere dati
+  EthereumAddress? _contractAddr;           //indirizzo di deploy dello smart contract
   var _balance, _session, _account, _escrow, _credentials;
-  Barcode? _result;
+  Barcode? _result;                  //risultato della scansione QR code
   String? _barCodeResult;
 
   stateContext._internal() {
@@ -18,9 +18,10 @@ class stateContext {
 
   static stateContext getState() {
     if (_stateContext == null) {
+      //non è stata istanziata
       _stateContext = stateContext._internal();
     }
-
+    //ritorna l'unica istanza
     return _stateContext!;
   }
 
