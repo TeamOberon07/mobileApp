@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mobile_app_poc/QRScanPage.dart';
 
 void main() {
-   test('State context funzionamento', (){
-     expect(1, 1);
-     expect("", "");
+     testWidgets('QRScanPage', (WidgetTester tester) async {
+  // TODO: Implement test
+
+    await tester.pumpWidget(MaterialApp(home: QRScanPage()));
   });
 }

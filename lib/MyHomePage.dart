@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:dart_web3/dart_web3.dart';
@@ -100,6 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
   //utente che non ha eseguito l'accesso: connesione al wallet
   //utente che ha eseguito l'accesso: scan QR e visualizzazione ordini
   Column _getButtons() {
+
+    print("stateContext");
+    print(stateContext.getState());
+    print("Account");
+    print(stateContext.getState().getAccount());
+
     if (stateContext.getState().getAccount() != null) {
       //l'utente deve ancora fare l'accesso
       return Column(children: [
@@ -121,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SizedBox(
               child: ElevatedButton(
+                key: Key("QR"),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white12,
                   padding: const EdgeInsets.all(16.0),
@@ -140,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(
               child: ElevatedButton(
+                key: Key("Orders"),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white12,
                   padding: const EdgeInsets.all(16.0),
@@ -159,6 +169,8 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       ]);
     }
+
+
     //l'utente ha eseguito l'accesso e perciò è possibile effettuare chiamate allo smart contract
     return Column(children: [
       SizedBox(
@@ -183,6 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Row(
         children: [
           ElevatedButton(
+            key: Key("ConnectWallet"),
             style: ElevatedButton.styleFrom(
               primary: Colors.white12,
               padding: const EdgeInsets.all(16.0),
