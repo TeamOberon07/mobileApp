@@ -5,10 +5,10 @@
 
 // @dart = 2.15
 
-// When `package:mobile_app_poc/main.dart` defines `main`, that definition is shadowed by the definition below.
-export 'package:mobile_app_poc/main.dart';
+// When `file:///C:/Users/Xida/AppData/Local/Temp/flutter_tools.8d9fb6d6/flutter_test_listener.6fee091b/listener.dart` defines `main`, that definition is shadowed by the definition below.
+export 'file:///C:/Users/Xida/AppData/Local/Temp/flutter_tools.8d9fb6d6/flutter_test_listener.6fee091b/listener.dart';
 
-import 'package:mobile_app_poc/main.dart' as entrypoint;
+import 'file:///C:/Users/Xida/AppData/Local/Temp/flutter_tools.8d9fb6d6/flutter_test_listener.6fee091b/listener.dart' as entrypoint;
 import 'dart:io'; // flutter_ignore: dart_io_import.
 import 'package:url_launcher_android/url_launcher_android.dart';
 import 'package:url_launcher_ios/url_launcher_ios.dart';
