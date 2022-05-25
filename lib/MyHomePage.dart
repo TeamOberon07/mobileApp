@@ -102,12 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //utente che non ha eseguito l'accesso: connesione al wallet
   //utente che ha eseguito l'accesso: scan QR e visualizzazione ordini
   Column _getButtons() {
-
-    print("stateContext");
-    print(stateContext.getState());
-    print("Account");
-    print(stateContext.getState().getAccount());
-
     if (stateContext.getState().getAccount() != null) {
       //l'utente deve ancora fare l'accesso
       return Column(children: [

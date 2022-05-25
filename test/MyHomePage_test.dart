@@ -18,7 +18,7 @@ void main() {
   // TODO: Implement test
 
     var state = stateContext.getState();
-    state.setAccount("0xe5b197d91ad002a18917ab4fdc6b6e0126797482");
+    state.setAccount("e5b197d91ad002a18917ab4fdc6b6e0126797482");
 
     await tester.pumpWidget(MaterialApp(home: MyHomePage(title: 'ShopChain Mobile')));
 

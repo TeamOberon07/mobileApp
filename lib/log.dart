@@ -31,7 +31,7 @@ class Log {
   }
 
   //costruzione del widget di riga per ogni log
-  List<Row> getColumn() {
+  List<Row>  getColumn(){
     List<Row> list = [];
     _value.forEach((key, value) {
       list.add(

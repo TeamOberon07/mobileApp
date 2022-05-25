@@ -21,7 +21,7 @@ class OrdersPage extends StatelessWidget {
                   fit: BoxFit.cover)),
           child: FutureBuilder(
               //futureBuilder si mette in attesa della risposta della funzione asincrona getOrders
-              future: _getOrders(),
+              future: getOrders(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   //la funzione non ha ancora completato il suo corso e perciò va indicato il caricamento
@@ -142,13 +142,22 @@ class OrdersPage extends StatelessWidget {
   }
 
   //funzione asincrona il cui scopo consiste nell'ottenere la lista degli ordini di cui il wallet loggato è il Buyer
-  Future<List<Order>> _getOrders() async {
+  Future<List<Order>> getOrders({bool jump = false}) async {
     try {
-      List<dynamic> rawOrders = await stateContext
-          .getState()
-          .getEscrow()
-          .getOrdersOfUser(
-              EthereumAddress.fromHex(stateContext.getState().getAccount()));
+      List<dynamic> rawOrders = 
+      [[BigInt.from(12), 
+      "0xe5b197d91ad002a18917ab4fdc6b6e0126797482",
+      "0xe5b197d91ad002a18917ab4fdc6b6e0126797482",
+      BigInt.from(1),
+      "Created"]];
+
+      if(!jump){
+        rawOrders= await stateContext
+        .getState()
+        .getEscrow()
+        .getOrdersOfUser(
+        EthereumAddress.fromHex(stateContext.getState().getAccount()));
+      }
       List<Order> orders = [];
 
       //gli ordini ottenuti dallo smart contract vengono convertiti in Order.dart

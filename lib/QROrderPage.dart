@@ -25,7 +25,9 @@ class _QROrderPageState extends State<QROrderPage> {
   @override
   Widget build(BuildContext context) {
     String QRresult = stateContext.getState().getBarcodeResult()!;
+    print("QRResult"+QRresult);
     String OrderBuyer = QRresult.split(":")[0];
+    print("account"+stateContext.getState().getAccount());
     if (OrderBuyer.toLowerCase() !=
         stateContext.getState().getAccount().toString()) {
       //l'utente connesso al wallet non è il Buyer dell'ordine e viene presentato un errore di conseguenza

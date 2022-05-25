@@ -8,4 +8,7 @@ void main() {
 
     await tester.pumpWidget(MaterialApp(home: QROrderPage()));
   });
+
+  //Barcode  oggetto barcode vero in QR
+  //result Stringa del QR
 }
