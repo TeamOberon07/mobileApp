@@ -69,6 +69,7 @@ class _QRScanPageState extends State<QRScanPage> {
                               }
                               //flash disattivato
                               return ElevatedButton(
+                                key: Key("flash"),
                                   onPressed: () async {
                                     await controller?.toggleFlash();
                                     setState(() {});

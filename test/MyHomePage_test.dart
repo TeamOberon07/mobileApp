@@ -7,7 +7,6 @@ import 'package:mobile_app_poc/stateContext.dart';
 
 void main() {
   testWidgets('Connect Wallet', (WidgetTester tester) async {
-  // TODO: Implement test
     final btnConnect = find.byKey(ValueKey("ConnectWallet"));
 
     await tester.pumpWidget(MaterialApp(home: MyHomePage(title: 'ShopChain Mobile')));
@@ -15,8 +14,6 @@ void main() {
   });
 
    testWidgets('Orders', (WidgetTester tester) async {
-  // TODO: Implement test
-
     var state = stateContext.getState();
     state.setAccount("e5b197d91ad002a18917ab4fdc6b6e0126797482");
 
@@ -27,8 +24,7 @@ void main() {
   });
 
    testWidgets('Scan QR', (WidgetTester tester) async {
-  // TODO: Implement test
-     var state = stateContext.getState();
+    var state = stateContext.getState();
     state.setAccount("0xe5b197d91ad002a18917ab4fdc6b6e0126797482");
 
     await tester.pumpWidget(MaterialApp(home: MyHomePage(title: 'ShopChain Mobile')));

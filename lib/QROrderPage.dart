@@ -53,6 +53,7 @@ class _QROrderPageState extends State<QROrderPage> {
                   width: 300,
                   height: 100,
                   child: ElevatedButton(
+                    key: Key("homepage"),
                       //bottone che permette di ritornare alla home page e riprovare lo scan
                       onPressed: () => {
                             stateContext.getState().setBarcodeResult(""),
