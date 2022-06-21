@@ -19,7 +19,8 @@ class OrdersPage extends StatelessWidget {
               image: DecorationImage(
                   image: AssetImage("assets/app-wallpaper1.png"),
                   fit: BoxFit.cover)),
-          child: FutureBuilder(
+          child: ListView(children: [
+          FutureBuilder(
               //futureBuilder si mette in attesa della risposta della funzione asincrona getOrders
               future: getOrders(),
               builder: (context, snapshot) {
@@ -137,7 +138,7 @@ class OrdersPage extends StatelessWidget {
                   SizedBox(height: 20),
                   SingleChildScrollView(child: (Column(children: col)))
                 ]);
-              })),
+              })],)),
     );
   }
 
