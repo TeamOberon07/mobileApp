@@ -224,16 +224,17 @@ class _QROrderPageState extends State<QROrderPage> {
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
                                   onPressed: () async {
-                                    final receipt =
-                                        await _confirmOrder(order!.getId());
                                     confirmButtonPressed = true;
                                     setState(() {});
-                                    print("AREO4\n" + receipt.toString());
+                                    final receipt =
+                                        await _confirmOrder(order!.getId());
+                                    setState(() {});
+                                    print("AREO4\n" + receipt);
                                   },
                                   child: Text(
                                       !confirmButtonPressed
                                           ? "Confirm Order"
-                                          : "Waiting for confirmation...",
+                                          : "Waiting for transaction...",
                                       style: !confirmButtonPressed
                                           ? TextStyle(fontSize: 22)
                                           : TextStyle(fontSize: 18)),
@@ -307,7 +308,11 @@ class _QROrderPageState extends State<QROrderPage> {
     final client = Web3Client(stateContext.getState().getRpcUrl(), Client());
     print("AREO1\n" + returned);
     print("AREO2\n" + client.toString());
-    final receipt = await client.getTransactionReceipt(returned);
+    var receipt = null;
+    do{
+      print("uo sono nel while");
+      receipt = await client.getTransactionReceipt(returned.toString());
+    } while (receipt == null);
     print("AREO3\n" + receipt.toString());
     return receipt.toString();
   }
