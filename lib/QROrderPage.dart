@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:dart_web3/dart_web3.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -18,6 +19,7 @@ class QROrderPage extends StatefulWidget {
 
 class _QROrderPageState extends State<QROrderPage> {
   get mainAxisAlignment => null;
+  bool confirmButtonPressed = false;
 
   //variabile contenente l'ordine che viene letto dal QR
   Order? order;
@@ -25,9 +27,9 @@ class _QROrderPageState extends State<QROrderPage> {
   @override
   Widget build(BuildContext context) {
     String QRresult = stateContext.getState().getBarcodeResult()!;
-    print("QRResult"+QRresult);
+    print("QRResult" + QRresult);
     String OrderBuyer = QRresult.split(":")[0];
-    print("account"+stateContext.getState().getAccount());
+    print("account" + stateContext.getState().getAccount());
     if (OrderBuyer.toLowerCase() !=
         stateContext.getState().getAccount().toString()) {
       //l'utente connesso al wallet non è il Buyer dell'ordine e viene presentato un errore di conseguenza
@@ -53,7 +55,7 @@ class _QROrderPageState extends State<QROrderPage> {
                   width: 300,
                   height: 100,
                   child: ElevatedButton(
-                    key: Key("homepage"),
+                      key: Key("homepage"),
                       //bottone che permette di ritornare alla home page e riprovare lo scan
                       onPressed: () => {
                             stateContext.getState().setBarcodeResult(""),
@@ -89,7 +91,7 @@ class _QROrderPageState extends State<QROrderPage> {
                   //viene prelevato l'id dell'ordine e chiamata la funzione che ne ottiene i dati
                   future: _getOrder(int.parse(QRresult.split(":")[1])),
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       //l'app è ancore in attesa del risultato della chiamata asincrona che interroga lo smart contract e quindi
                       //presenta un indicatore di caricamento
                       return Center(child: CircularProgressIndicator());
@@ -222,18 +224,26 @@ class _QROrderPageState extends State<QROrderPage> {
                                         fontSize: 22, fontFamily: 'Poppins'),
                                   ),
                                   onPressed: () async {
-                                    _confirmOrder(order!.getId());
+                                    final receipt =
+                                        await _confirmOrder(order!.getId());
+                                    confirmButtonPressed = true;
+                                    setState(() {});
+                                    print("AREO4\n" + receipt.toString());
                                   },
-                                  child: const Text("Confirm Order",
-                                      style: TextStyle(fontSize: 22)),
+                                  child: Text(
+                                      !confirmButtonPressed
+                                          ? "Confirm Order"
+                                          : "Waiting for confirmation...",
+                                      style: !confirmButtonPressed
+                                          ? TextStyle(fontSize: 22)
+                                          : TextStyle(fontSize: 18)),
                                 ),
                                 width: 200,
-                                height: 75,
+                                height: !confirmButtonPressed ? 75 : 100,
                               )
                             : const SizedBox(height: 0),
                         //in base allo stato è possibile presentare anche l'opzione richiesta reso
                         (order!.getState() == OrderState.Created ||
-                                order!.getState() == OrderState.Shipped ||
                                 order!.getState() == OrderState.Confirmed)
                             ? SizedBox(
                                 child: ElevatedButton(
@@ -255,7 +265,7 @@ class _QROrderPageState extends State<QROrderPage> {
                           height: 30,
                         ),
                         FutureBuilder(
-                          //futureBuilder permette di attendere il risultato della chiamata dei log per poi presentarli all'utente
+                            //futureBuilder permette di attendere il risultato della chiamata dei log per poi presentarli all'utente
                             future: _getLog(order!),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
@@ -280,19 +290,26 @@ class _QROrderPageState extends State<QROrderPage> {
   }
 
   //questa funzione costruisce la transazione di conferma ed avvia l'app MetaMask
-  Future<void> _confirmOrder(String orderID) async {
+  Future<String> _confirmOrder(String orderID) async {
     final transaction = Transaction(
       to: stateContext.getState().getContractAddr(),
       from: EthereumAddress.fromHex(stateContext.getState().getAccount()),
       value: EtherAmount.fromUnitAndValue(EtherUnit.finney, 0),
     );
 
+    // ignore: deprecated_member_use
     launch("https://metamask.app.link/");
 
     String returned = await stateContext.getState().getEscrow().confirmOrder(
         BigInt.parse(orderID),
         credentials: stateContext.getState().getCredentials(),
         transaction: transaction);
+    final client = Web3Client(stateContext.getState().getRpcUrl(), Client());
+    print("AREO1\n" + returned);
+    print("AREO2\n" + client.toString());
+    final receipt = await client.getTransactionReceipt(returned);
+    print("AREO3\n" + receipt.toString());
+    return receipt.toString();
   }
 
   //questa funzione costruisce la transazione di richiesta reso ed avvia l'app MetaMask
