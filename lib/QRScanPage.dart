@@ -69,7 +69,7 @@ class _QRScanPageState extends State<QRScanPage> {
                               }
                               //flash disattivato
                               return ElevatedButton(
-                                key: Key("flash"),
+                                  key: Key("flash"),
                                   onPressed: () async {
                                     await controller?.toggleFlash();
                                     setState(() {});
@@ -124,7 +124,9 @@ class _QRScanPageState extends State<QRScanPage> {
           stateContext.getState().setResult(scanData);
           if (count == 0) {
             count++;
-            stateContext.getState().setBarcodeResult(stateContext.getState().getResult()!.code);  
+            stateContext
+                .getState()
+                .setBarcodeResult(stateContext.getState().getResult()!.code);
             Navigator.of(context).pop();
             //apertura della pagina successiva (visualizzazione ordine)
             Navigator.of(context).push(_createRoute2());
@@ -169,4 +171,3 @@ class _QRScanPageState extends State<QRScanPage> {
     super.dispose();
   }
 }
-

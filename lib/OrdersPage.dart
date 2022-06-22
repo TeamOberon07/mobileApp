@@ -19,145 +19,155 @@ class OrdersPage extends StatelessWidget {
               image: DecorationImage(
                   image: AssetImage("assets/app-wallpaper1.png"),
                   fit: BoxFit.cover)),
-          child: ListView(children: [
-          FutureBuilder(
-              //futureBuilder si mette in attesa della risposta della funzione asincrona getOrders
-              future: getOrders(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  //la funzione non ha ancora completato il suo corso e perciò va indicato il caricamento
-                  return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Center(child: CircularProgressIndicator())]);
-                }
+          child: ListView(
+            children: [
+              FutureBuilder(
+                  //futureBuilder si mette in attesa della risposta della funzione asincrona getOrders
+                  future: getOrders(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      //la funzione non ha ancora completato il suo corso e perciò va indicato il caricamento
+                      return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(child: CircularProgressIndicator())
+                          ]);
+                    }
 
-                //il risultato è castabile come List<Order>
-                List<Order> orders = snapshot.data as List<Order>;
+                    //il risultato è castabile come List<Order>
+                    List<Order> orders = snapshot.data as List<Order>;
 
-                //inizializzazione della riga di intestazione
-                List<Row> col = [
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 50,
-                        padding: const EdgeInsets.all(8),
-                        child: const Text(
-                          "ID",
-                          style: TextStyle(fontSize: 23),
-                          textAlign: TextAlign.center,
-                        ),
-                        color: Colors.white24,
-                      ),
-                      Container(
-                        width: 120,
-                        height: 50,
-                        padding: const EdgeInsets.all(8),
-                        child: const Text(
-                          "Seller",
-                          style: TextStyle(fontSize: 23),
-                          textAlign: TextAlign.center,
-                        ),
-                        color: Colors.white12,
-                      ),
-                      Container(
-                        width: 80,
-                        height: 50,
-                        padding: const EdgeInsets.all(8),
-                        child: const Text(
-                          "Amnt",
-                          style: TextStyle(fontSize: 23),
-                          textAlign: TextAlign.center,
-                        ),
-                        color: Colors.white24,
-                      ),
-                      Container(
-                        width: 120,
-                        height: 50,
-                        padding: const EdgeInsets.all(8),
-                        child: const Text(
-                          "State",
-                          style: TextStyle(fontSize: 23),
-                          textAlign: TextAlign.center,
-                        ),
-                        color: Colors.white12,
-                      ),
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  ),
-                ];
-                //per ogni ordine viene creata la riga che lo rappresenta ed aggiunta alla lista di righe della tabella
-                orders.forEach((element) => {
-                      col.add(Row(
+                    // reverse orders list for id
+                    orders = orders.reversed.toList();
+
+                    //inizializzazione della riga di intestazione
+                    List<Row> col = [
+                      Row(
                         children: [
                           Container(
                             width: 40,
                             height: 50,
                             padding: const EdgeInsets.all(8),
-                            child: Text(
-                              element.getId(),
+                            child: const Text(
+                              "ID",
+                              style: TextStyle(fontSize: 23),
                               textAlign: TextAlign.center,
                             ),
-                            color: Colors.white12,
+                            color: Colors.white24,
                           ),
                           Container(
                             width: 120,
                             height: 50,
                             padding: const EdgeInsets.all(8),
-                            child: Text(
-                              element.getFormattedSeller(),
+                            child: const Text(
+                              "Seller",
+                              style: TextStyle(fontSize: 23),
                               textAlign: TextAlign.center,
                             ),
-                            color: Colors.white24,
+                            color: Colors.white12,
                           ),
                           Container(
                             width: 80,
                             height: 50,
                             padding: const EdgeInsets.all(8),
-                            child: Text(
-                              element.getAmount() + "\$",
+                            child: const Text(
+                              "Amnt",
+                              style: TextStyle(fontSize: 23),
                               textAlign: TextAlign.center,
                             ),
-                            color: Colors.white12,
+                            color: Colors.white24,
                           ),
                           Container(
                             width: 120,
                             height: 50,
                             padding: const EdgeInsets.all(8),
-                            child: Text(
-                              EnumToString.convertToString(element.getState()).replaceAll('_', ' '),
+                            child: const Text(
+                              "State",
+                              style: TextStyle(fontSize: 23),
                               textAlign: TextAlign.center,
                             ),
-                            color: Colors.white24,
+                            color: Colors.white12,
                           ),
                         ],
                         mainAxisAlignment: MainAxisAlignment.center,
-                      ))
-                    });
-                return Column(children: [
-                  SizedBox(height: 20),
-                  SingleChildScrollView(child: (Column(children: col)))
-                ]);
-              })],)),
+                      ),
+                    ];
+                    //per ogni ordine viene creata la riga che lo rappresenta ed aggiunta alla lista di righe della tabella
+                    orders.forEach((element) => {
+                          col.add(Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 50,
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  element.getId(),
+                                  textAlign: TextAlign.center,
+                                ),
+                                color: Colors.white12,
+                              ),
+                              Container(
+                                width: 120,
+                                height: 50,
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  element.getFormattedSeller(),
+                                  textAlign: TextAlign.center,
+                                ),
+                                color: Colors.white24,
+                              ),
+                              Container(
+                                width: 80,
+                                height: 50,
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  element.getAmount() + "\$",
+                                  textAlign: TextAlign.center,
+                                ),
+                                color: Colors.white12,
+                              ),
+                              Container(
+                                width: 120,
+                                height: 50,
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
+                                  EnumToString.convertToString(
+                                          element.getState())
+                                      .replaceAll('_', ' '),
+                                  textAlign: TextAlign.center,
+                                ),
+                                color: Colors.white24,
+                              ),
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          ))
+                        });
+                    return Column(children: [
+                      SizedBox(height: 20),
+                      SingleChildScrollView(child: (Column(children: col)))
+                    ]);
+                  })
+            ],
+          )),
     );
   }
 
   //funzione asincrona il cui scopo consiste nell'ottenere la lista degli ordini di cui il wallet loggato è il Buyer
   Future<List<Order>> getOrders({bool jump = false}) async {
     try {
-      List<dynamic> rawOrders = 
-      [[BigInt.from(12), 
-      "0xe5b197d91ad002a18917ab4fdc6b6e0126797482",
-      "0xe5b197d91ad002a18917ab4fdc6b6e0126797482",
-      BigInt.from(1),
-      "Created"]];
+      List<dynamic> rawOrders = [
+        [
+          BigInt.from(12),
+          "0xe5b197d91ad002a18917ab4fdc6b6e0126797482",
+          "0xe5b197d91ad002a18917ab4fdc6b6e0126797482",
+          BigInt.from(1),
+          "Created"
+        ]
+      ];
 
-      if(!jump){
-        rawOrders= await stateContext
-        .getState()
-        .getEscrow()
-        .getOrdersOfUser(
-        EthereumAddress.fromHex(stateContext.getState().getAccount()));
+      if (!jump) {
+        rawOrders = await stateContext.getState().getEscrow().getOrdersOfUser(
+            EthereumAddress.fromHex(stateContext.getState().getAccount()));
       }
       List<Order> orders = [];
 
